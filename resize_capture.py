@@ -1,12 +1,25 @@
-import numpy as np
-import os
+import json
 
-H, W = 192, 256
+input_file = "capture.json"
+output_file = "capture.json"
 
-dummy = np.ones((H,W), dtype=np.float32)
-conf = np.ones((H,W), dtype=np.uint8)
+with open(input_file, "r") as f:
+    data = json.load(f)
 
-out_dir = "./"
-for i in range(0, 169):
-    dummy.tofile(f"{out_dir}/depth_{i}.bin")
-    conf.tofile(f"{out_dir}/depthConfidence_{i}.bin")
+# case 1: structure is {"frames": [...]}
+if "frames" in data:
+    for frame in data["frames"]:
+        if "resolution" in frame:
+            frame["resolution"] = [480, 640]
+
+# case 2: flat list of frames
+elif isinstance(data, list):
+    for frame in data:
+        if "resolution" in frame:
+            frame["resolution"] = [480, 640]
+
+# save result
+with open(output_file, "w") as f:
+    json.dump(data, f, indent=2)
+
+print("Done. Saved to", output_file)

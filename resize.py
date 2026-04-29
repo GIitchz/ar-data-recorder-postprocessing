@@ -13,6 +13,9 @@ resized = 0
 png = 0
 
 for path in glob.glob(os.path.join(input_folder, "frame_*")):
+    filename = os.path.basename(path)
+    if not (filename[-3:]=="png" or filename[-4:]=="jpeg"):
+        continue
     img = Image.open(path)
 
     w, h = img.size
@@ -20,7 +23,6 @@ for path in glob.glob(os.path.join(input_folder, "frame_*")):
     scale = min(target_w/w, target_h/h)
     img = img.resize((int(w*scale), int(h*scale)), Image.Resampling.LANCZOS)
 
-    # STEP 2: create blank canvas (black padding)
     filename = os.path.basename(path)
     if filename[-3:]=="png":
         canvas = Image.new("RGBA", (target_w, target_h), (0, 0, 0, 0))
