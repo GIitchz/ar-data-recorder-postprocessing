@@ -1,3 +1,4 @@
+Run format.py (source_folder_directory) [--max_value=max depth in depthmap] [--no_recolor]  
 For the virtual scene data:  
 rename.py - renames virtual_* files into the proper frame_%05d format  
 resize.py - expects files to be renamed first. Resizes it to match the real scene's resolution (value hardcoded in code for now)  
